@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#C9EBF9"
     tools:layout_editor_absoluteY="81dp">
 
     <ImageView
@@ -16,7 +17,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewSafeTalk"
-        app:srcCompat="@drawable/stlogo" />
+        app:srcCompat="@drawable/stlogo"
+        android:background="#000000"
+        android:padding="1dp"
+        />
 
     <EditText
         android:id="@+id/editTextEmail"
@@ -87,6 +91,7 @@
         android:layout_marginTop="33dp"
         android:background="#FD7C6E"
         android:text="Sign Up"
+        android:textColor="#000000"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
