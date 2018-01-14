@@ -43,7 +43,7 @@ public class AddFriends extends AppCompatActivity implements SearchView.OnQueryT
     private String TAG = AddFriends.class.getSimpleName();
     private ArrayAdapter<String> adaptingLister;
     private List<User> allUsers;
-    private List<String> allNames;
+    private List<String> allNumbers;
 
     private User currentUser;
     private String userId;
@@ -64,7 +64,7 @@ public class AddFriends extends AppCompatActivity implements SearchView.OnQueryT
     private void searchDatabaseForUsers() {
         //final boolean dataPullComplete[] = {false};
         allUsers = new ArrayList<User>();
-        allNames = new ArrayList<String>();
+        allNumbers = new ArrayList<String>();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         final CountDownLatch waitLatch = new CountDownLatch(1);
 
@@ -74,7 +74,7 @@ public class AddFriends extends AppCompatActivity implements SearchView.OnQueryT
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     allUsers.add(userSnapshot.getValue(User.class));
-                    allNames.add(userSnapshot.getValue(User.class).getName());
+                    allNumbers.add(userSnapshot.getValue(User.class).getPhoneNumber());
                     if (userSnapshot.getValue(User.class).getUserId().equals(userId)) {
                         currentUser = userSnapshot.getValue(User.class);
                     }
@@ -92,7 +92,7 @@ public class AddFriends extends AppCompatActivity implements SearchView.OnQueryT
     private void initViews() {
         search_toolbar = (Toolbar) findViewById(R.id.SearchBar);
         search_listView = (ListView) findViewById(R.id.SearchList);
-        adaptingLister = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, allNames.toArray(new String[allNames.size()]));
+        adaptingLister = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_2, allNumbers.toArray(new String[allNumbers.size()]));
         search_listView.setAdapter(adaptingLister);
 
         hint_message = (TextView) findViewById(R.id.HintText);
@@ -105,8 +105,8 @@ public class AddFriends extends AppCompatActivity implements SearchView.OnQueryT
         search_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                //Unsure if it is position or id
-                User userToMakeFriend = allUsers.get(position);
+
+                User userToMakeFriend = allUsers.get((int)id);
                 currentUser.addUserFriend(userToMakeFriend);
                 userToMakeFriend.addUserFriend(currentUser);
 
