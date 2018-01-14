@@ -15,10 +15,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -100,10 +102,15 @@ public class AddFriends extends AppCompatActivity implements SearchView.OnQueryT
         actionBar.setTitle(R.string.app_name);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        search_listView.setOnClickListener(new View.OnClickListener() {
+        search_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                //Unsure if it is position or id
+                User userToMakeFriend = allUsers.get(position);
+                currentUser.addUserFriend(userToMakeFriend);
+                userToMakeFriend.addUserFriend(currentUser);
 
+                successToast();
             }
         });
         //Making list invisible initially to keep UI clean
@@ -146,6 +153,10 @@ public class AddFriends extends AppCompatActivity implements SearchView.OnQueryT
                 return super.onOptionsItemSelected(menuItem);
         }
 
+    }
+
+    public void successToast(){
+        Toast.makeText(AddFriends.this, "New friend added!", Toast.LENGTH_SHORT).show();
     }
 
 
