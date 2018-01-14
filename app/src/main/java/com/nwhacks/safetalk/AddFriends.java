@@ -2,6 +2,7 @@ package com.nwhacks.safetalk;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -41,17 +42,20 @@ public class AddFriends extends AppCompatActivity implements SearchView.OnQueryT
     private ArrayAdapter<String> adaptingLister;
     private List<User> allUsers;
     private List<String> allNames;
-    private String names[] = {"Test", "another test", "oh"};
-    private String locations[];
+
+    private User currentUser;
+    private String userId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_friends);
+
+        Intent intent = getIntent();
+        userId = intent.getExtras().getString("id");
+
         searchDatabaseForUsers();
-
-
-
     }
 
     //Want to find all users
@@ -66,9 +70,12 @@ public class AddFriends extends AppCompatActivity implements SearchView.OnQueryT
         findUser.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot userSnapshot: dataSnapshot.getChildren()){
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     allUsers.add(userSnapshot.getValue(User.class));
                     allNames.add(userSnapshot.getValue(User.class).getName());
+                    if (userSnapshot.getValue(User.class).getUserId().equals(userId)) {
+                        currentUser = userSnapshot.getValue(User.class);
+                    }
                 }
                 initViews();
             }
@@ -92,6 +99,13 @@ public class AddFriends extends AppCompatActivity implements SearchView.OnQueryT
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.app_name);
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        search_listView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
         //Making list invisible initially to keep UI clean
         search_listView.setAlpha(0);
     }

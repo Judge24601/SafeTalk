@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
             if(savedInstanceState == null){
                 Intent launchLoginPage = new Intent(MainActivity.this, loginActivity.class);
                 startActivity(launchLoginPage);
-            }else {
+            } else {
                 userId = savedInstanceState.getString("id");
                 mDatabase = FirebaseDatabase.getInstance().getReference();
                 retrieveUser();
@@ -298,6 +298,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onAddFriendsClick(View view){
         Intent changeActivityIntent = new Intent(this, AddFriends.class);
+        changeActivityIntent.putExtra("id", userId);
         startActivity(changeActivityIntent);
     }
 
